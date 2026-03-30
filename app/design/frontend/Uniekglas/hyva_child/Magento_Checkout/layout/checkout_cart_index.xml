@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Remove Coupon -->
+        <referenceBlock name="checkout.cart.coupon" remove="true" />
+        
+        <!-- Remove Shipping Estimator -->
+        <referenceBlock name="checkout.cart.shipping" remove="true" />
+        
+        <!-- Remove Shipping Line from Totals -->
+        <referenceBlock name="checkout.cart.totals">
+            <action method="unsetChild">
+                <argument name="alias" xsi:type="string">shipping</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

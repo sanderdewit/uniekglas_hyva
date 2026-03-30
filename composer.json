@@ -1,0 +1,128 @@
+{
+    "name": "magento/project-community-edition",
+    "description": "eCommerce Platform for Growth (Community Edition)",
+    "type": "project",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "magento/magento-composer-installer": true,
+            "magento/inventory-composer-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "magento/composer-dependency-version-audit-plugin": true,
+            "magento/composer-root-update-plugin": true,
+            "laminas/laminas-dependency-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "require": {
+        "aitoc/options-management": "^1",
+        "bsscommerce/advancedhideprice": "dev-hotfixm246",
+        "community-engineering/language-nl_nl": "^0.0.67",
+        "galacticlabs/disable-compare-products": "^1.0",
+        "hyva-themes/hyva-ui": "^2.6",
+        "hyva-themes/i18n-nl-nl": "^1.3",
+        "hyva-themes/magento2-bsscommerce-advanced-hide-price": "^1.0",
+        "hyva-themes/magento2-default-theme": "^1.3",
+        "hyva-themes/magento2-hyva-widgets": "^1.0",
+        "hyva-themes/magento2-luma-checkout": "^1.1",
+        "hyva-themes/magento2-react-checkout": "^1.1",
+        "laminas/laminas-zendframework-bridge": "^1.8",
+        "magefan/module-lazyload": "^2.0",
+        "magefan/module-product-grid-inline": "^2.3",
+        "magefan/module-wysiwyg-advanced": "^2.0",
+        "magehost/performance-dashboard": "^1.14",
+        "magento/composer-root-update-plugin": "^2",
+        "magento/product-community-edition": "2.4.8-p4",
+        "mageplaza/module-smtp": "^4",
+        "microsoft/azure-storage-blob": "^1.5",
+        "webkul/module-azureblobstorage": "5.0.2"
+    },
+    "require-dev": {
+        "allure-framework/allure-phpunit": "^3.1",
+        "carlos-mg89/oauth": "^0.8.17",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+        "friendsofphp/php-cs-fixer": "~3.5.0",
+        "magento/magento-coding-standard": "*",
+        "pdepend/pdepend": "3.x-dev",
+        "magento/magento-allure-phpunit": "^3.0.2",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpmd/phpmd": "3.x-dev",
+        "phpunit/phpunit": "^10.5",
+        "squizlabs/php_codesniffer": "^3.6.1"
+    },
+    "conflict": {
+        "gene/bluefoot": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Magento\\Framework\\": "lib/internal/Magento/Framework/",
+            "Solwin\\": "app/code/Solwin/",
+            "Hiddentechies\\": "app/code/Hiddentechies/",
+            "Magento\\Setup\\": "setup/src/Magento/Setup/",
+            "Magento\\": "app/code/Magento/"
+        },
+        "files": [
+            "app/etc/NonComposerComponentRegistration.php"
+        ],
+        "exclude-from-classmap": [
+            "**/dev/**",
+            "**/update/**",
+            "*/*/Test/**/*Test"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Magento\\Sniffs\\": "dev/tests/static/framework/Magento/Sniffs/",
+            "Magento\\Tools\\": "dev/tools/Magento/Tools/",
+            "Magento\\Tools\\Sanity\\": "dev/build/publication/sanity/Magento/Tools/Sanity/",
+            "Magento\\TestFramework\\Inspection\\": "dev/tests/static/framework/Magento/TestFramework/Inspection/",
+            "Magento\\TestFramework\\Utility\\": "dev/tests/static/framework/Magento/TestFramework/Utility/"
+        }
+    },
+    "minimum-stability": "stable",
+    "repositories": {
+        "hyva-themes": {
+            "type": "composer",
+            "url": "https://hyva-themes.repo.packagist.com/uniekglas-nl-m9fzfai/"
+        },
+        "amasty": {
+            "type": "composer",
+            "url": "https://composer.amasty.com/community/"
+        },
+        "webkul_repo": {
+            "type": "composer",
+            "url": "https://magerepo.webkul.com/"
+        },
+        "magefan-m2-pge": {
+            "type": "composer",
+            "url": "https://yItxf4zjpWFxr0ZeRNn8leigc7jBIj83:gHo2akpVqQnxCe4UxZCDB2A7g3EsCkDv@magefan.com/repo/"
+        },
+        "0": {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        },
+        "aitoc": {
+            "type": "composer",
+            "url": "https://composer.aitoc.com/community/"
+        },
+        "bsscommerce": {
+            "type": "composer",
+            "url": "https://composer.bsscommerce.com/community"
+        }
+    },
+    "extra": {
+        "magento-force": "override",
+        "laminas": {
+            "laminas-zendframework-bridge": {
+                "replacements": {
+                    "Zend\\Http\\Client": "Laminas\\Http\\Client"
+                }
+            }
+        }
+    }
+}

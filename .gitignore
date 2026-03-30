@@ -1,0 +1,74 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git / patch / temp
+*.orig
+*.rej
+*.tmp
+*.bak
+
+# Magento secrets / local env
+app/etc/env.php
+auth.json
+.env
+.env.*
+!.env.example
+
+# Magento generated / runtime
+/generated/
+/var/
+/pub/static/*
+!/pub/static/.htaccess
+!/pub/static/deployed_version.txt
+/pub/media/
+/pub/media/*
+!/pub/media/.htaccess
+
+# Dependency folders
+/vendor/
+/node_modules/
+
+# Logs / dumps / backups
+*.log
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+
+# Certificates / keys / secrets
+*.pem
+*.key
+*.crt
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# Testing / reports
+/phpunit.xml
+/phpunit.xml.dist.local
+/.phpunit.result.cache
+
+# npm / yarn noise
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Coverage / build artifacts
+coverage/
+dist/
+build/
+
+# Local tool config
+/.cache/
+
+.htaccess.old
+app/etc/config.php.dump
+app/etc/code/

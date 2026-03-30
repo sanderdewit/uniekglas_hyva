@@ -1,0 +1,23 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+$viewModels = $block->getViewModelRegistry();
+$sliderViewModel = $viewModels->require(\Hyva\Theme\ViewModel\Slider::class);
+
+// Load CMS blocks by identifiers
+$blockIdentifiers = ['homepage_slide_1', 'homepage_slide_2', 'homepage_slide_3'];
+$cmsBlocks = [];
+$cmsBlockRepository = $block->getLayout()->getBlock('cms.block.repository');
+
+foreach ($blockIdentifiers as $identifier) {
+    try {
+        $cmsBlocks[] = $cmsBlockRepository->getById($identifier);
+    } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+        // Handle missing blocks if necessary
+    }
+}
+
+echo $sliderViewModel->getSliderForItems(
+    'Magento_Cms::slider/item.phtml',
+    $cmsBlocks
+)->toHtml();
+?>

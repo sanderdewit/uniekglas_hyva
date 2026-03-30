@@ -1,0 +1,14 @@
+{
+    "name": "sander/cspfix",
+    "description": "Custom module for CSP fixes",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Sander\\Cspfix\\": ""
+        }
+    }
+}

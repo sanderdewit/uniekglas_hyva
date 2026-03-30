@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="topmenu_desktop">
+            <block
+                class="Magento\Framework\View\Element\Template"
+                name="topmenu_desktop_item"
+                template="Magento_Theme::html/header/menu/desktop-item.phtml"
+            />
+        </referenceBlock>
+        <referenceBlock name="footer">
+            <!-- Remove the default/static links column -->
+            <referenceBlock name="footer-static-links" remove="true"/>
+        </referenceBlock>
+        <referenceBlock name="footer-cms-content">
+            <arguments>
+                <argument name="block_id" xsi:type="string">2026_footer_content_pb</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
