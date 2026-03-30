@@ -1,0 +1,37 @@
+server {
+    listen 8080;
+    listen [::]:8080;
+    server_name _;
+
+    root /home/site/wwwroot/pub;
+    index index.php index.html index.htm;
+
+    client_max_body_size 64M;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location /static/ {
+        expires max;
+        access_log off;
+        try_files $uri $uri/ /static.php?resource=$uri&$args;
+    }
+
+    location /media/ {
+        expires max;
+        access_log off;
+        try_files $uri $uri/ /get.php?$args;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_read_timeout 600;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
