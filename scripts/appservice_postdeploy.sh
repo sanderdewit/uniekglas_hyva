@@ -7,8 +7,12 @@ cd "$APP_DIR"
 
 echo "Running Magento post-deploy tasks..."
 
-php -d memory_limit=-1 bin/magento setup:upgrade
+php scripts/render-env.php
+php -l app/etc/env.php
+
+php bin/magento setup:upgrade
 php bin/magento cache:clean
 php bin/magento cache:flush
+php bin/magento azureblob:static-content-export
 
 echo "Post-deploy tasks completed."

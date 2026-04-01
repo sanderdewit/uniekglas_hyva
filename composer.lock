@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e23046cc9f1c51ebc500b27e0070141b",
+    "content-hash": "1ffeacf5945c4a22c4af515c85229180",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -26759,16 +26759,16 @@
         },
         {
             "name": "webonyx/graphql-php",
-            "version": "v15.31.1",
+            "version": "v15.31.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webonyx/graphql-php.git",
-                "reference": "8b446b55a30680f105eb5c4d25ccbc015926d398"
+                "reference": "b2c3b02f9151afeba7ab79580e89992ac0ad4fec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/8b446b55a30680f105eb5c4d25ccbc015926d398",
-                "reference": "8b446b55a30680f105eb5c4d25ccbc015926d398",
+                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/b2c3b02f9151afeba7ab79580e89992ac0ad4fec",
+                "reference": "b2c3b02f9151afeba7ab79580e89992ac0ad4fec",
                 "shasum": ""
             },
             "require": {
@@ -26786,7 +26786,7 @@
                 "nyholm/psr7": "^1.5",
                 "phpbench/phpbench": "^1.2",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "2.1.40",
+                "phpstan/phpstan": "2.1.42",
                 "phpstan/phpstan-phpunit": "2.0.16",
                 "phpstan/phpstan-strict-rules": "2.0.10",
                 "phpunit/phpunit": "^9.5 || ^10.5.21 || ^11",
@@ -26822,7 +26822,7 @@
             ],
             "support": {
                 "issues": "https://github.com/webonyx/graphql-php/issues",
-                "source": "https://github.com/webonyx/graphql-php/tree/v15.31.1"
+                "source": "https://github.com/webonyx/graphql-php/tree/v15.31.2"
             },
             "funding": [
                 {
@@ -26834,7 +26834,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2026-03-16T15:32:01+00:00"
+            "time": "2026-03-23T07:32:52+00:00"
         },
         {
             "name": "wikimedia/less.php",
@@ -29737,5 +29737,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

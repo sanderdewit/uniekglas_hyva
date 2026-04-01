@@ -71,4 +71,3 @@ build/
 
 .htaccess.old
 app/etc/config.php.dump
-app/etc/code/

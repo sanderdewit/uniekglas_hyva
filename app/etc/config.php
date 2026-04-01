@@ -398,11 +398,6 @@ return [
         'PayPal_BraintreeReward' => 1,
         'Sander_Cspfix' => 1,
         'Sander_RemoveCoupon' => 0,
-        'Solwin_Breadcrumbs' => 0,
-        'Solwin_Core' => 0,
-        'Solwin_Cpanel' => 0,
-        'Solwin_ScrolltoTop' => 0,
-        'Solwin_Soldout' => 0,
         'Webkul_AzureBlobStorage' => 1
     ]
 ];
