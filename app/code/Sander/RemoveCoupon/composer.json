@@ -1,6 +1,6 @@
 {
-  "name": "sander/magento2-cspfix",
-  "description": "Magento 2 CSP overrides for Uniekglas",
+  "name": "sander/magento2-remove-coupon",
+  "description": "Removes the coupon component from Magento 2 checkout",
   "type": "magento2-module",
   "license": [
     "proprietary"
@@ -9,14 +9,14 @@
   "require": {
     "php": "^8.2 || ^8.3",
     "magento/framework": "*",
-    "magento/module-csp": "*"
+    "magento/module-checkout": "*"
   },
   "autoload": {
     "files": [
       "registration.php"
     ],
     "psr-4": {
-      "Sander\\Cspfix\\": ""
+      "Sander\\RemoveCoupon\\": ""
     }
   }
 }
