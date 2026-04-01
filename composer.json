@@ -40,7 +40,8 @@
         "magento/product-community-edition": "2.4.8-p4",
         "mageplaza/module-smtp": "^4",
         "microsoft/azure-storage-blob": "^1.5",
-        "webkul/module-azureblobstorage": "5.0.2"
+        "webkul/module-azureblobstorage": "5.0.2",
+        "webonyx/graphql-php": "15.31.2"
     },
     "require-dev": {
         "allure-framework/allure-phpunit": "^3.1",
