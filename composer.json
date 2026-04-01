@@ -40,6 +40,8 @@
         "magento/product-community-edition": "2.4.8-p4",
         "mageplaza/module-smtp": "^4",
         "microsoft/azure-storage-blob": "^1.5",
+        "sander/magento2-cspfix": "dev-main",
+        "sander/magento2-remove-coupon": "dev-main",
         "webkul/module-azureblobstorage": "5.0.2",
         "webonyx/graphql-php": "15.31.2"
     },
@@ -62,8 +64,6 @@
     "autoload": {
         "psr-4": {
             "Magento\\Framework\\": "lib/internal/Magento/Framework/",
-            "Solwin\\": "app/code/Solwin/",
-            "Hiddentechies\\": "app/code/Hiddentechies/",
             "Magento\\Setup\\": "setup/src/Magento/Setup/",
             "Magento\\": "app/code/Magento/"
         },
@@ -87,6 +87,14 @@
     },
     "minimum-stability": "stable",
     "repositories": {
+        "remove-coupon": {
+            "type": "vcs",
+            "url": "git@github.com:sanderdewit/magento2-remove-coupon.git"
+        },
+        "cspfix": {
+            "type": "vcs",
+            "url": "git@github.com:sanderdewit/magento2-cspfix.git"
+        },
         "hyva-themes": {
             "type": "composer",
             "url": "https://hyva-themes.repo.packagist.com/uniekglas-nl-m9fzfai/"

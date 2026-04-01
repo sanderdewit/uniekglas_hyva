@@ -361,7 +361,6 @@ return [
         'Magento_WishlistGraphQl' => 1,
         'Aitoc_Core' => 1,
         'Aitoc_OptionsManagement' => 1,
-        'Amasty_Mage24Fix' => 0,
         'Bss_AdvancedHidePrice' => 1,
         'GalacticLabs_DisableCompareProducts' => 1,
         'Hyva_Theme' => 1,
@@ -397,7 +396,7 @@ return [
         'PayPal_BraintreeGraphQl' => 0,
         'PayPal_BraintreeReward' => 1,
         'Sander_Cspfix' => 1,
-        'Sander_RemoveCoupon' => 0,
+        'Sander_RemoveCoupon' => 1,
         'Webkul_AzureBlobStorage' => 1
     ]
 ];

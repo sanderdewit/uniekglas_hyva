@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ffeacf5945c4a22c4af515c85229180",
+    "content-hash": "2c4aa6885d6e4fe63c1fd16f2c3a940b",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -23003,6 +23003,84 @@
             "time": "2025-07-11T13:20:48+00:00"
         },
         {
+            "name": "sander/magento2-cspfix",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:sanderdewit/magento2-cspfix.git",
+                "reference": "6ca7d800e69cbf94f65970c83223186451983598"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sanderdewit/magento2-cspfix/zipball/6ca7d800e69cbf94f65970c83223186451983598",
+                "reference": "6ca7d800e69cbf94f65970c83223186451983598",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "*",
+                "magento/module-csp": "*",
+                "php": "^8.2 || ^8.3"
+            },
+            "default-branch": true,
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Sander\\Cspfix\\": ""
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Magento 2 CSP overrides for Uniekglas",
+            "support": {
+                "source": "https://github.com/sanderdewit/magento2-cspfix/tree/main",
+                "issues": "https://github.com/sanderdewit/magento2-cspfix/issues"
+            },
+            "time": "2026-04-01T21:52:43+00:00"
+        },
+        {
+            "name": "sander/magento2-remove-coupon",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:sanderdewit/magento2-remove-coupon.git",
+                "reference": "04be2183c14c380568701f87ef46e021b73dcaab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sanderdewit/magento2-remove-coupon/zipball/04be2183c14c380568701f87ef46e021b73dcaab",
+                "reference": "04be2183c14c380568701f87ef46e021b73dcaab",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "*",
+                "magento/module-checkout": "*",
+                "php": "^8.2 || ^8.3"
+            },
+            "default-branch": true,
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Sander\\RemoveCoupon\\": ""
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Removes the coupon component from Magento 2 checkout",
+            "support": {
+                "source": "https://github.com/sanderdewit/magento2-remove-coupon/tree/main",
+                "issues": "https://github.com/sanderdewit/magento2-remove-coupon/issues"
+            },
+            "time": "2026-04-01T21:52:43+00:00"
+        },
+        {
             "name": "seld/jsonlint",
             "version": "1.11.0",
             "source": {
@@ -29731,7 +29809,9 @@
     "stability-flags": {
         "bsscommerce/advancedhideprice": 20,
         "pdepend/pdepend": 20,
-        "phpmd/phpmd": 20
+        "phpmd/phpmd": 20,
+        "sander/magento2-cspfix": 20,
+        "sander/magento2-remove-coupon": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -1,2 +1,0 @@
-# module-mage24fix
-
