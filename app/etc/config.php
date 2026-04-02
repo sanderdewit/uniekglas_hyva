@@ -377,7 +377,6 @@ return [
         'Hyva_BaseLayoutReset' => 1,
         'Hyva_LumaCheckout' => 1,
         'Hyva_Widgets' => 1,
-        'Local_SessionWatch' => 1,
         'MageHost_PerformanceDashboard' => 1,
         'Magefan_Community' => 1,
         'Magefan_AdminUserGuide' => 1,
