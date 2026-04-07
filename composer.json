@@ -42,8 +42,8 @@
         "microsoft/azure-storage-blob": "^1.5",
         "sander/magento2-cspfix": "^1.0.0",
         "sander/magento2-remove-coupon": "^1.0.0",
-        "webkul/module-azureblobstorage": "5.0.2",
-        "webonyx/graphql-php": "15.31.2"
+        "webkul/module-azureblobstorage": "^5.0.2",
+        "webonyx/graphql-php": "^15.31.2"
     },
     "require-dev": {
         "allure-framework/allure-phpunit": "^3.1",
