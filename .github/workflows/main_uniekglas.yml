@@ -104,16 +104,16 @@ jobs:
       # Static content deploy — runs entirely in GitHub Actions
       # Output goes to pub/static/ which gets synced to blob below
       # ------------------------------------------------------------------ #
-      - name: Deploy static content
-        run: |
-          php bin/magento setup:static-content:deploy \
-            nl_NL en_US \
-            --theme Hyva/hyva_child \
-            --theme Magento/blank \
-            --theme Magento/luma \
-            --jobs "$(nproc)" \
-            --no-ansi \
-            -f
+#      - name: Deploy static content
+#        run: |
+#          php bin/magento setup:static-content:deploy \
+#            nl_NL en_US \
+#            --theme Hyva/hyva_child \
+#            --theme Magento/blank \
+#            --theme Magento/luma \
+#            --jobs "$(nproc)" \
+#            --no-ansi \
+#            -f
 
       # ------------------------------------------------------------------ #
       # Azure login (OIDC)
@@ -129,17 +129,17 @@ jobs:
       # Sync static files to blob — runs entirely in GitHub Actions
       # AFD serves these directly; App Service never touches pub/static
       # ------------------------------------------------------------------ #
-      - name: Sync static assets to blob storage
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az storage blob sync \
-              --source pub/static \
-              --container "${{ env.STATIC_CONTAINER }}" \
-              --account-name "${{ env.STORAGE_ACCOUNT }}" \
-              --auth-mode login \
-              --delete-destination true
+#      - name: Sync static assets to blob storage
+#        uses: azure/cli@v2
+#       with:
+#          azcliversion: latest
+#          inlineScript: |
+#            az storage blob sync \
+#              --source pub/static \
+#              --container "${{ env.STATIC_CONTAINER }}" \
+#              --account-name "${{ env.STORAGE_ACCOUNT }}" \
+#              --auth-mode login \
+#              --delete-destination true
 
       # ------------------------------------------------------------------ #
       # Trim the deployment package
