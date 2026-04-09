@@ -45,6 +45,9 @@ jobs:
             ${{ secrets.WEBKUL_PUBLIC_KEY }} ${{ secrets.WEBKUL_PRIVATE_KEY }}
           composer config --global http-basic.magefan.com \
             ${{ secrets.MAGEFAN_PUBLIC_KEY }} ${{ secrets.MAGEFAN_PRIVATE_KEY }}
+          composer config --global github-oauth.github.com \
+            ${{ secrets.SANDER_PRIVATE_KEY }}
+
 
       - name: Run composer install if composer.json exists
         if: steps.check_files.outputs.files_exists == 'true'
