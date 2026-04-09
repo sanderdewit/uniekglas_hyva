@@ -1,80 +1,123 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy PHP app to Azure Web App - uniekglas
+name: Build and deploy to Azure App Service
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      skip_swap:
+        description: 'Stop after staging deploy, skip production swap'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  PHP_VERSION: '8.3'
+  APP_NAME: uniekglas
+  RESOURCE_GROUP: RG_Magento2
+  STORAGE_ACCOUNT: containersstor
+  STATIC_CONTAINER: uniekstatic
+  AFD_PROFILE: uniekglas
+  AFD_ENDPOINT_MAIN: uniekglas
+  AFD_ENDPOINT_MEDIA: uniekmedia
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
+      # ------------------------------------------------------------------ #
+      # Checkout
+      # ------------------------------------------------------------------ #
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      # ------------------------------------------------------------------ #
+      # PHP — include all extensions Magento needs that are also on
+      # App Service, so compiled artifacts are compatible
+      # ------------------------------------------------------------------ #
+      - name: Setup PHP ${{ env.PHP_VERSION }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
-          extensions: bcmath, gd, intl, mbstring, pdo_mysql, soap, xsl, zip, redis
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: >-
+            bcmath, bz2, calendar, curl, dom, exif, fileinfo, gd, gettext,
+            gmp, iconv, igbinary, imagick, intl, json, mbstring, mysqli,
+            opcache, pcntl, pdo_mysql, redis, soap, sockets, sodium,
+            xsl, zip, zlib
+          ini-values: |
+            memory_limit=2G
+            opcache.enable=1
+            opcache.memory_consumption=512
+            opcache.interned_strings_buffer=32
+            opcache.max_accelerated_files=60000
+            opcache.validate_timestamps=0
+            opcache.save_comments=1
+          coverage: none
 
-      - name: Check if composer.json exists
-        id: check_files
-        uses: andstor/file-existence-action@v1
-        with:
-          files: 'composer.json'
-      - name: Configure Composer auth
+      # ------------------------------------------------------------------ #
+      # Composer auth
+      # ------------------------------------------------------------------ #
+      - name: Configure Composer credentials
         run: |
           composer config --global http-basic.repo.magento.com \
-            ${{ secrets.MAGENTO_PUBLIC_KEY }} ${{ secrets.MAGENTO_PRIVATE_KEY }}
+            "${{ secrets.MAGENTO_PUBLIC_KEY }}" "${{ secrets.MAGENTO_PRIVATE_KEY }}"
           composer config --global http-basic.hyva-themes.repo.packagist.com \
-            ${{ secrets.HYVA_PUBLIC_KEY }} ${{ secrets.HYVA_PRIVATE_KEY }}
+            "${{ secrets.HYVA_PUBLIC_KEY }}" "${{ secrets.HYVA_PRIVATE_KEY }}"
           composer config --global http-basic.composer.aitoc.com \
-            ${{ secrets.AITOC_PUBLIC_KEY }} ${{ secrets.AITOC_PRIVATE_KEY }}
+            "${{ secrets.AITOC_PUBLIC_KEY }}" "${{ secrets.AITOC_PRIVATE_KEY }}"
           composer config --global http-basic.composer.amasty.com \
-            ${{ secrets.AMASTY_PUBLIC_KEY }} ${{ secrets.AMASTY_PRIVATE_KEY }}
+            "${{ secrets.AMASTY_PUBLIC_KEY }}" "${{ secrets.AMASTY_PRIVATE_KEY }}"
           composer config --global http-basic.composer.bsscommerce.com \
-            ${{ secrets.BSSCOMMERCE_PUBLIC_KEY }} ${{ secrets.BSSCOMMERCE_PRIVATE_KEY }}
+            "${{ secrets.BSSCOMMERCE_PUBLIC_KEY }}" "${{ secrets.BSSCOMMERCE_PRIVATE_KEY }}"
           composer config --global http-basic.repo.webkul.com \
-            ${{ secrets.WEBKUL_PUBLIC_KEY }} ${{ secrets.WEBKUL_PRIVATE_KEY }}
+            "${{ secrets.WEBKUL_PUBLIC_KEY }}" "${{ secrets.WEBKUL_PRIVATE_KEY }}"
           composer config --global http-basic.magefan.com \
-            ${{ secrets.MAGEFAN_PUBLIC_KEY }} ${{ secrets.MAGEFAN_PRIVATE_KEY }}
+            "${{ secrets.MAGEFAN_PUBLIC_KEY }}" "${{ secrets.MAGEFAN_PRIVATE_KEY }}"
           composer config --global github-oauth.github.com \
-            ${{ secrets.SANDER_PRIVATE_KEY }}
+            "${{ secrets.SANDER_PRIVATE_KEY }}"
 
+      # ------------------------------------------------------------------ #
+      # Composer install
+      # ------------------------------------------------------------------ #
+      - name: Install Composer dependencies
+        run: |
+          composer validate --no-check-publish
+          composer install \
+            --no-dev \
+            --prefer-dist \
+            --no-progress \
+            --optimize-autoloader
 
-      - name: Run composer install if composer.json exists
-        if: steps.check_files.outputs.files_exists == 'true'
-        run: composer validate --no-check-publish && composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
-
-      - name: Compile DI
+      # ------------------------------------------------------------------ #
+      # DI compile — runs entirely in GitHub Actions
+      # Generated code is included in the deployment package so App Service
+      # never needs to compile anything on startup
+      # ------------------------------------------------------------------ #
+      - name: Compile dependency injection
         run: php bin/magento setup:di:compile
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: php-app
-          path: .
+      # ------------------------------------------------------------------ #
+      # Static content deploy — runs entirely in GitHub Actions
+      # Output goes to pub/static/ which gets synced to blob below
+      # ------------------------------------------------------------------ #
+      - name: Deploy static content
+        run: |
+          php bin/magento setup:static-content:deploy \
+            nl_NL en_US \
+            --theme Hyva/hyva_child \
+            --theme Magento/blank \
+            --theme Magento/luma \
+            --jobs "$(nproc)" \
+            --no-ansi \
+            -f
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: php-app
-      
+      # ------------------------------------------------------------------ #
+      # Azure login (OIDC)
+      # ------------------------------------------------------------------ #
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -82,11 +125,134 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CFDCC3A5A1F84AE0B8105306E420189C }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A7A2A116531442858D1688118E27873C }}
 
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
+      # ------------------------------------------------------------------ #
+      # Sync static files to blob — runs entirely in GitHub Actions
+      # AFD serves these directly; App Service never touches pub/static
+      # ------------------------------------------------------------------ #
+      - name: Sync static assets to blob storage
+        uses: azure/cli@v2
         with:
-          app-name: 'uniekglas'
-          slot-name: 'uniekglas'
+          azcliversion: latest
+          inlineScript: |
+            az storage blob sync \
+              --source pub/static \
+              --container "${{ env.STATIC_CONTAINER }}" \
+              --account-name "${{ env.STORAGE_ACCOUNT }}" \
+              --auth-mode login \
+              --delete-destination true
+
+      # ------------------------------------------------------------------ #
+      # Trim the deployment package
+      # After blob sync, pub/static is not needed on App Service.
+      # generated/ IS included — compiled in Actions, ready to serve.
+      # ------------------------------------------------------------------ #
+      - name: Prepare deployment package
+        run: |
+          rm -rf \
+            dev/tests \
+            phpserver \
+            var/cache \
+            var/page_cache \
+            var/session \
+            var/tmp \
+            .git
+
+          # Static files are on blob — strip from package to keep it small
+          # Keep pub/errors/ and pub/health_check.php (served locally by App Service)
+          find pub/static -type f \
+            ! -name '.htaccess' \
+            ! -name 'deployed_version.txt' \
+            -delete 2>/dev/null || true
+          find pub/static -mindepth 1 -type d -empty -delete 2>/dev/null || true
+
+          echo "Package size: $(du -sh . | cut -f1)"
+
+      # ------------------------------------------------------------------ #
+      # Deploy to staging slot
+      # The package already contains compiled DI and no pub/static bloat
+      # ------------------------------------------------------------------ #
+      - name: Deploy to staging slot
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          slot-name: staging
           package: .
-          
+          clean: true
+
+      # ------------------------------------------------------------------ #
+      # Run setup:upgrade on staging via App Service SSH
+      # This is the ONE step that must run on the slot because it needs
+      # database access through the VNet.
+      # For most deploys (no schema changes) this completes in ~5 seconds.
+      # ------------------------------------------------------------------ #
+      - name: Run setup:upgrade on staging
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            # Generate env.php first (startup.sh does this on container start,
+            # but SSH sessions don't re-run startup.sh)
+            az webapp ssh \
+              --name "${{ env.APP_NAME }}" \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --slot staging \
+              --command "cd /home/site/wwwroot && php scripts/render-env.php"
+
+            az webapp ssh \
+              --name "${{ env.APP_NAME }}" \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --slot staging \
+              --command "cd /home/site/wwwroot && php bin/magento setup:upgrade --keep-generated --no-ansi"
+
+            az webapp ssh \
+              --name "${{ env.APP_NAME }}" \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --slot staging \
+              --command "cd /home/site/wwwroot && php bin/magento cache:flush --no-ansi"
+
+      # ------------------------------------------------------------------ #
+      # Purge AFD static cache after blob sync
+      # ------------------------------------------------------------------ #
+      - name: Purge AFD static cache
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az afd endpoint purge \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --profile-name "${{ env.AFD_PROFILE }}" \
+              --endpoint-name "${{ env.AFD_ENDPOINT_MEDIA }}" \
+              --content-paths '/uniekstatic/*' \
+              --no-wait
+
+      # ------------------------------------------------------------------ #
+      # Swap staging → production
+      # Skipped when skip_swap is true (manual deploy to staging only)
+      # ------------------------------------------------------------------ #
+      - name: Swap staging to production
+        if: ${{ github.event.inputs.skip_swap != 'true' }}
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az webapp deployment slot swap \
+              --name "${{ env.APP_NAME }}" \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --slot staging \
+              --target-slot production
+
+      # ------------------------------------------------------------------ #
+      # Purge AFD HTML cache after swap
+      # ------------------------------------------------------------------ #
+      - name: Purge AFD HTML cache
+        if: ${{ github.event.inputs.skip_swap != 'true' }}
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az afd endpoint purge \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --profile-name "${{ env.AFD_PROFILE }}" \
+              --endpoint-name "${{ env.AFD_ENDPOINT_MAIN }}" \
+              --content-paths '/*' \
+              --no-wait
