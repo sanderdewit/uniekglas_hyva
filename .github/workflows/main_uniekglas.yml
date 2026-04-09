@@ -175,7 +175,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_NAME }}
-          slot-name: staging
+          slot-name: uniekglas
           package: .
           clean: true
 
