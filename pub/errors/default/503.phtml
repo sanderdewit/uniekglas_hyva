@@ -1,12 +1,126 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-?>
+http_response_code(503);
+header('Content-Type: text/html; charset=UTF-8');
+header('Retry-After: 3600');
+?><!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Uniekglas is tijdelijk niet beschikbaar</title>
+    <style>
+        :root {
+            --bg: #f7f4ef;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --accent: #7c5a3a;
+            --border: #e5ded3;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .card {
+            width: 100%;
+            max-width: 760px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+        .brand {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        h1 {
+            margin: 0 0 16px;
+            font-size: 32px;
+            line-height: 1.2;
+        }
+        p {
+            margin: 0 0 14px;
+        }
+        .muted {
+            color: var(--muted);
+        }
+        .contact {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .contact strong {
+            display: inline-block;
+            min-width: 110px;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .note {
+            margin-top: 18px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+        @media (max-width: 640px) {
+            .card {
+                padding: 28px 20px;
+            }
+            h1 {
+                font-size: 26px;
+            }
+            .contact strong {
+                min-width: 0;
+                display: block;
+                margin-bottom: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <main class="card">
+        <div class="brand">Uniekglas</div>
+        <h1>Onze website is tijdelijk niet beschikbaar</h1>
+        <p>
+            We voeren op dit moment onderhoud uit aan de website.
+            Daardoor is de webshop tijdelijk niet bereikbaar.
+        </p>
+        <p>
+            We werken eraan om alles zo snel mogelijk weer online te krijgen.
+            Probeert u het later vandaag opnieuw.
+        </p>
 
-<h1>Service Temporarily Unavailable</h1>
-<p>
-    The server is temporarily unable to service your request due to maintenance downtime or capacity problems.
-    Please try again later.
-</p>
+        <section class="contact">
+            <p><strong>E-mail</strong> <a href="mailto:info@uniekglas.nl">info@uniekglas.nl</a></p>
+            <p><strong>Telefoon</strong> <a href="tel:+31493490068">0493-490068</a></p>
+            <p><strong>Adres</strong> Boerenkamplaan 108, 5712 AH Someren-Eind</p>
+        </section>
+
+        <p class="note">
+            Excuses voor het ongemak en bedankt voor uw begrip.
+        </p>
+    </main>
+</div>
+</body>
+</html>
