@@ -7,19 +7,22 @@
         "AFL-3.0"
     ],
     "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "laminas/laminas-dependency-plugin": true,
+            "magento/*": true,
+            "php-http/discovery": true
+        },
         "preferred-install": "dist",
         "sort-packages": true,
-        "allow-plugins": {
-            "magento/magento-composer-installer": true,
-            "magento/inventory-composer-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "magento/composer-dependency-version-audit-plugin": true,
-            "magento/composer-root-update-plugin": true,
-            "laminas/laminas-dependency-plugin": true,
-            "php-http/discovery": true
+        "platform": {
+            "php": "8.3.99"
         }
     },
     "require": {
+        "magento/product-community-edition": "2.4.8-p4",
+        "magento/composer-root-update-plugin": "^2.0.4",
+        "magento/composer-dependency-version-audit-plugin": "~0.1",
         "aitoc/options-management": "^1",
         "bsscommerce/advancedhideprice": "dev-hotfixm246",
         "community-engineering/language-nl_nl": "^0.0.67",
@@ -31,13 +34,10 @@
         "hyva-themes/magento2-hyva-widgets": "^1.0",
         "hyva-themes/magento2-luma-checkout": "^1.1",
         "hyva-themes/magento2-react-checkout": "^1.1",
-        "laminas/laminas-zendframework-bridge": "^1.8",
         "magefan/module-lazyload": "^2.0",
         "magefan/module-product-grid-inline": "^2.3",
         "magefan/module-wysiwyg-advanced": "^2.0",
         "magehost/performance-dashboard": "^1.14",
-        "magento/composer-root-update-plugin": "^2",
-        "magento/product-community-edition": "2.4.8-p4",
         "mageplaza/module-smtp": "^4",
         "microsoft/azure-storage-blob": "^1.5",
         "sander/magento2-cspfix": "^1.0.0",
@@ -48,44 +48,48 @@
     "require-dev": {
         "allure-framework/allure-phpunit": "^3.1",
         "carlos-mg89/oauth": "^0.8.17",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-        "friendsofphp/php-cs-fixer": "~3.5.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7 || ^1.0",
+        "dg/bypass-finals": "^1.4",
+        "friendsofphp/php-cs-fixer": "^3.22",
         "magento/magento-coding-standard": "*",
-        "pdepend/pdepend": "3.x-dev",
         "magento/magento-allure-phpunit": "^3.0.2",
-        "phpcompatibility/php-compatibility": "^9.3",
+        "pdepend/pdepend": "3.x-dev",
         "phpmd/phpmd": "3.x-dev",
+        "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^10.5",
-        "squizlabs/php_codesniffer": "^3.6.1"
+        "symfony/finder": "^6.4"
     },
     "conflict": {
         "gene/bluefoot": "*"
     },
     "autoload": {
-        "psr-4": {
-            "Magento\\Framework\\": "lib/internal/Magento/Framework/",
-            "Magento\\Setup\\": "setup/src/Magento/Setup/",
-            "Magento\\": "app/code/Magento/"
-        },
-        "files": [
-            "app/etc/NonComposerComponentRegistration.php"
-        ],
         "exclude-from-classmap": [
             "**/dev/**",
             "**/update/**",
             "*/*/Test/**/*Test"
-        ]
+        ],
+        "files": [
+            "app/etc/NonComposerComponentRegistration.php"
+        ],
+        "psr-0": {
+            "": ["app/code/", "generated/code/"]
+        },
+        "psr-4": {
+            "Magento\\Setup\\": "setup/src/Magento/Setup/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
+            "Magento\\PhpStan\\": "dev/tests/static/framework/Magento/PhpStan/",
             "Magento\\Sniffs\\": "dev/tests/static/framework/Magento/Sniffs/",
-            "Magento\\Tools\\": "dev/tools/Magento/Tools/",
-            "Magento\\Tools\\Sanity\\": "dev/build/publication/sanity/Magento/Tools/Sanity/",
             "Magento\\TestFramework\\Inspection\\": "dev/tests/static/framework/Magento/TestFramework/Inspection/",
-            "Magento\\TestFramework\\Utility\\": "dev/tests/static/framework/Magento/TestFramework/Utility/"
+            "Magento\\TestFramework\\Utility\\": "dev/tests/static/framework/Magento/TestFramework/Utility/",
+            "Magento\\Tools\\": "dev/tools/Magento/Tools/",
+            "Magento\\Tools\\Sanity\\": "dev/build/publication/sanity/Magento/Tools/Sanity/"
         }
     },
     "minimum-stability": "stable",
+    "prefer-stable": true,
     "repositories": {
         "remove-coupon": {
             "type": "vcs",
@@ -125,13 +129,6 @@
         }
     },
     "extra": {
-        "magento-force": "override",
-        "laminas": {
-            "laminas-zendframework-bridge": {
-                "replacements": {
-                    "Zend\\Http\\Client": "Laminas\\Http\\Client"
-                }
-            }
-        }
+        "magento-force": "override"
     }
 }
